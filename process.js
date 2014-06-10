@@ -3,7 +3,7 @@
  * Richard Marmorstein
  * June 2014
  *
- * When a shapefile is converted to JSON there are a bunch of 'features',
+ * When a shapefile is converted to GeoJSON there are a bunch of 'features',
  * which consist of collections of points. I'm not interested in the
  * distinction between different features, I just want the border. This
  * file takes all the features and turns them into a single array of
@@ -12,7 +12,7 @@
 
  */
 run('geographiclib.js');
-run('usCanadaBorder.js');
+borderData = JSON.parse(snarf('border.json'));
 var geod = GeographicLib.Geodesic.WGS84;
 lines = [];
 for (var i = 0; i < borderData.features.length; i++) {
