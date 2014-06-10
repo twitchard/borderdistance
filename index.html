@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+<title>
+How Canadian is your Geographic Location?
+</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" ></script> <!--JQuery library -->
+<script src = "http://maps.google.com/maps/api/js?sensor=true&.js"></script><!-- Google Maps API -->
+<script src = "gmaps.js"></script><!-- Easier Google Maps API -->
+<script src = "geographiclib.js"></script><!-- Models the Earth as a oblate spheroid. -->
+</head>
+<body>
+<h1>
+	How Canadian is your Geographic Location?
+</h1>
+<p>
+Has a friend called into question the Americanness of your hometown? Have you been accused of being a <i>Canadian</i>? There are many factors to Canadianness, to be sure, but one predictor is <i>distance from the US-Canada border.</i> Plug in the names of two geographic locations, (town names, street addresses---it's Google maps so it can find anything), then click "Measure Distance to Border" to compare the distances.</p>
+<center>
+	<form>
+	<table>
+<tr><td><label>Location 1: <input id = "loc1" type = "text" /></label></td><td><label>Distance: <span id = "dist1" type = "text" /> </label></td></tr>
+<tr><td><label>Location 2: <input id = "loc2" type = "text" /></label></td><td><label>Distance: <span id = "dist2" type = "text" /> </label></td></tr>
+	<tr>
+		<td><input id = "measureDistance" value = "Measure Distance to Border" type = "button" /></td>
+		<td><input id = "clear" type = "reset" value = "Clear" /></td>
+	</tr>
+</table></form>
+<div id = "map" style = "width: 600px; height: 500px">
+</div>
+</center>
+
+<p> Distances are determined by modelling the Earth as a oblate spheroid according to the specifications of the <a href = "http://en.wikipedia.org/wiki/World_Geodetic_System">WGS 84 standard.</a> The location of the US-Canada border is as specified in <a href = "http://nationalatlas.gov/atlasftp-na.html?openChapters=chpbound#chpbound">the shapefile</a> provided by nationalatlas.gov, a project of the U.S. Geological Survey.
+<p> This app makes use of the <a href = "http://geographiclib.sourceforge.net/">GeographicLib library</a> by Charles Karney, and the <a href = "http://hpneo.github.io/gmaps/">gmaps.js library</a> by Gustavo Leon.
+<center>
+<p> App by Richard Marmorstein, June 2014. This is free and unencumbered software released into the public domain. </p>
+</center>
+<script src = "borderdistance.js"></script><!-- Defines function to find the closest point on a border to another point -->
+<script src = "borderSegments.js"></script><!-- Loads the data defining the US-Canadian border -->
+<script>
+// Initialize the map.
+map = new GMaps({
+   div: "#map",
+   lat: 49.037868,
+   lng: -100.195312,
+   zoom: 4,
+});
+var geod = GeographicLib.Geodesic.WGS84;
+var dms = GeographicLib.DMS;
+var MAX_GAP = 35;
+var MAX_POINTS = 1000;
+var FIRST_COLOR = '#0000ff';
+var SECOND_COLOR = '#ff0000';
+var OPACITY = 0.8;
+var WEIGHT = 6;
+$('#clear').click(function(){
+  $('#dist1').text("");
+  $('#dist2').text("");
+  map.removeMarkers();
+  map.removePolylines();
+});
+$('#measureDistance').click(function () {
+  map.removeMarkers();
+  map.removePolylines();
+  GMaps.geocode({
+  address: $('#loc1').val(),
+  callback: function(results, status) {
+    if (status == 'OK') {
+      var latlng = results[0].geometry.location;
+      var result = BorderDistance.distanceToBorder(latlng.lat(), latlng.lng());
+      map.addMarker({lat: latlng.lat(), lng: latlng.lng(), title: $('#loc1').val(), infoWindow: {content: 'Distance from Canada: ' + result.distance / 1000 + ' kilometers'}});
+      //map.addMarker({lat: result.point[0], lng: result.point[1]});
+      pathPoints = geod.InversePath(latlng.lat(), latlng.lng(),
+	                          result.point[0], result.point[1],
+	                          MAX_GAP, MAX_POINTS);
+      path = []
+      for (var i = 0, n = pathPoints.length; i < n; i++) {
+          path.push([pathPoints[i].lat, pathPoints[i].lon]);
+      }
+      map.drawPolyline({
+              path: path,
+	      strokeColor: FIRST_COLOR,
+	      strokeOpacity: OPACITY,
+	      strokeWeight: WEIGHT
+	      });
+      $("#dist1").text(result.distance / 1000 + " kilometers")
+  }
+  }});
+  GMaps.geocode({
+  address: $('#loc2').val(),
+  callback: function(results, status) {
+    if (status == 'OK') {
+      var latlng = results[0].geometry.location;
+      var result = BorderDistance.distanceToBorder(latlng.lat(), latlng.lng());
+      map.addMarker({lat: latlng.lat(), lng: latlng.lng(), title: $('#loc2').val(), infoWindow: {content: 'Distance from Canada: ' + result.distance / 1000 + ' kilometers'}});
+      //map.addMarker({lat: result.point[0], lng: result.point[1]});
+      pathPoints = geod.InversePath(latlng.lat(), latlng.lng(),
+	                          result.point[0], result.point[1],
+	                          MAX_GAP, MAX_POINTS);
+      path = []
+      for (var i = 0, n = pathPoints.length; i < n; i++) {
+          path.push([pathPoints[i].lat, pathPoints[i].lon]);
+      }
+      map.drawPolyline({
+              path: path,
+	      strokeColor: SECOND_COLOR,
+	      strokeOpacity: OPACITY,
+	      strokeWeight: WEIGHT
+	      });
+      $("#dist2").text(result.distance / 1000 + " kilometers")
+  }
+  }});
+
+
+});
+
+</script>
+</body>
+</html>
