@@ -1,0 +1,13 @@
+<div>
+    <span><strong>Location: <input ref:loc type="text" placeholder="Enter a location"/></strong></span>
+    <span><strong>Distance from Canadian Border:</strong> {{#if dist}}{{dist}}{{/if}}</span>
+</div>
+<script>
+    export default {
+        methods: {
+            getValue: function () {
+                return this.refs.loc.value
+            }
+        }
+    }
+</script>

@@ -1,0 +1,52 @@
+<div ref:gmap class="gmap"></div>
+<style>
+    .gmap {
+        width: 600px;
+        height: 500px;
+    }
+</style>
+<script>
+    import GMapsClient from '../lib/gmaps_client'
+    const PATH_OPACITY = 0.8
+    const PATH_WEIGHT = 6
+    export default {
+        onrender () {
+            GMapsClient.init(() => {
+                this.map = GMapsClient.renderMap(
+                    this.refs.gmap,
+                    49.037868,
+                    -100.195312,
+                    4
+                )
+            })
+        },
+        methods: {
+            reset () {
+                this.map.removeMarkers()
+                this.map.removePolylines()
+            },
+            addLocation (lat, lng, description, distance) {
+                return GMapsClient.geocode(description, (err, result) => {
+                    if (err) throw err
+
+                    this.map.addMarker({
+                        lat: lat,
+                        lng: lng,
+                        title: description,
+                        infoWindow: {
+                            content: 'Distance from Canada: ' + (distance / 1000) + ' kilometers'
+                        }
+                    })
+                })
+            },
+            addPath (path, color) {
+                this.map.drawPolyline({
+                    path: path,
+                    strokeColor: color,
+                    strokeOpacity: PATH_OPACITY,
+                    strokeWeight: PATH_WEIGHT
+                })
+            }
+        }
+    }
+</script>
