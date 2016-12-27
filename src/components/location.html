@@ -1,12 +1,22 @@
 <div>
-    <span><strong>Location: <input ref:loc type="text" placeholder="Enter a location"/></strong></span>
-    <span><strong>Distance from Canadian Border:</strong> {{#if dist}}{{dist}}{{/if}}</span>
+    <div class="col-md-3"><input ref:loc type="text" placeholder="Enter a location" class="form-control input-md"/></div>
+    <div class="col-md-3">Distance from Canadian Border: {{#if dist}}{{formattedDistance}}{{/if}}</div>
 </div>
 <script>
     export default {
+        data () {
+            return {
+                dist: null
+            }
+        },
         methods: {
             getValue: function () {
                 return this.refs.loc.value
+            }
+        },
+        computed: {
+            formattedDistance: (dist) => {
+                return (Math.round(dist)/1000) + " km"
             }
         }
     }

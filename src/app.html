@@ -1,20 +1,38 @@
-<Header></Header>
-<center>
-    {{#if loaded}}
-        <Location ref:loc1></Location>
-        <Location ref:loc2></Location>
-        <button on:click="measure()">Measure</button>
-        <GoogleMap ref:gmap></GoogleMap>
-    {{else}}
-    <p>Waiting for border data to load...</p>
-    {{/if}}
-</center>
-<Footer></Footer>
+<style>
+.starter-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+</style>
+<div class="container">
+<Navbar></Navbar>
+  <div class="starter-template">
+    <Header></Header>
+    <center>
+        {{#if loaded}}
+            <form on:submit="measure()" class="form-horizontal" action="">
+                <fieldset>
+                    <legend>Measure Distance</legend>
+                    <Location ref:loc1></Location>
+                    <Location ref:loc2></Location>
+                    <button on:click="measure()" class="btn btn-primary">Measure</button>
+                    <button type="reset" class="btn btn-inverse">Clear</button>
+                </fieldset>
+            </form>
+            <GoogleMap ref:gmap></GoogleMap>
+        {{else}}
+        <p>Waiting for border data to load...</p>
+        {{/if}}
+    </center>
+  </div>
+  <Footer></Footer>
+</div>
 <script>
+    import Navbar from './components/navbar'
     import Header from './components/header'
-    import Footer from './components/footer'
     import Location from './components/location'
     import GoogleMap from './components/googlemap'
+    import Footer from './components/footer'
     import async from 'async'
 
     import GMapsClient from './lib/gmaps_client'
@@ -30,6 +48,7 @@
         },
         components: {
             Header,
+            Navbar,
             Location,
             GoogleMap
         },
