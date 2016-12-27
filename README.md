@@ -2,7 +2,7 @@
 
 A working instance of this project is served at [twitchard.github.io/borderdistance](http://twitchard.github.io/borderdistance)
 
-This project is a javascript application for calculating and comparing distances from geographic locations to the US-Canada border. Distances are determined by modeling the Earth as an oblate spheroid according to the specifications of the [WGS 84 standard](http://en.wikipedia.org/wiki/World_Geodetic_System). The project makes use of the [GeographicLib library](http://geographiclib.sourceforge.net/) by Charles Karney, and the [gmaps.js](http://hpneo.github.io/gmaps/) library by Gustavo Leon.
+This project is a javascript application written with [sveltejs](https://svelte.technology) for calculating and comparing distances from geographic locations to the US-Canada border. Distances are determined by modeling the Earth as an oblate spheroid according to the specifications of the [WGS 84 standard](http://en.wikipedia.org/wiki/World_Geodetic_System). The project makes use of the [GeographicLib library](http://geographiclib.sourceforge.net/) by Charles Karney, and the [gmaps.js](http://hpneo.github.io/gmaps/) library by Gustavo Leon.
 
 ## To Build
 
