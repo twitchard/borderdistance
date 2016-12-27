@@ -6,7 +6,10 @@ This project is a javascript application written with [sveltejs](https://svelte.
 
 ## To Build
 
+Nodejs 6+ is required to build. If this is not the system nodejs, I recommend [nvm](https://github.com/creationix/nvm).
+
 ```sh
+nvm use 6
 npm install
 npm run build
 ```

@@ -9,8 +9,10 @@
     <p>Waiting for border data to load...</p>
     {{/if}}
 </center>
+<Footer></Footer>
 <script>
     import Header from './components/header'
+    import Footer from './components/footer'
     import Location from './components/location'
     import GoogleMap from './components/googlemap'
     import async from 'async'
@@ -18,7 +20,7 @@
     import GMapsClient from './lib/gmaps_client'
     import {distanceToBorder, pathBetween} from './lib/borderdistance'
 
-    const PATH_TO_MAP = 'maps/segments/canada.json'
+    var PATH_TO_MAP = 'maps/segments/canada.json'
     var border
     export default {
         data () {
