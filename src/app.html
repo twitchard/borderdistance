@@ -1,10 +1,13 @@
 <Header></Header>
 <center>
-<Location ref:loc1></Location>
-<Location ref:loc2></Location>
-<button on:click='measure()'>Compute</button>
-<button on:click='debug()'>Debug</button>
-<GoogleMap ref:gmap></GoogleMap>
+    {{#if loaded}}
+        <Location ref:loc1></Location>
+        <Location ref:loc2></Location>
+        <button on:click="measure()">Measure</button>
+        <GoogleMap ref:gmap></GoogleMap>
+    {{else}}
+    <p>Waiting for border data to load...</p>
+    {{/if}}
 </center>
 <script>
     import Header from './components/header'
@@ -15,8 +18,14 @@
     import GMapsClient from './lib/gmaps_client'
     import {distanceToBorder, pathBetween} from './lib/borderdistance'
 
+    const PATH_TO_MAP = 'maps/segments/canada.json'
     var border
     export default {
+        data () {
+            return {
+                loaded: false,
+            }
+        },
         components: {
             Header,
             Location,
@@ -50,36 +59,19 @@
                             colors[idx]
                         )
                     })
-
+                    this.refs.loc1.set({'dist': dists[0].distance})
+                    this.refs.loc2.set({'dist': dists[1].distance})
                 })
-
-                //this.refs.gmap.addLocation(
-                //    this.refs.loc1.getValue()
-                //)
-            },
-            debug: function () {
-                //border.map((x) => {
-                //    this.refs.gmap.addPath(
-                //        [
-                //          [x.start.lat, x.start.lon],
-                //          [x.end.lat, x.end.lon]
-                //        ],
-                //        '#00ff00'
-                //    )
-                //})
-                console.log('adding...')
-                this.refs.gmap.addLocation(49.41587, -62.9393, 'moo', 'moo')
-                this.refs.gmap.addLocation(46.55001, -63.6645, 'moot', 'moot')
-                this.refs.gmap.addPath([[-62.9393, 49.41587], [-63.6645, 46.55001]], '#ffff00')
             }
         },
         onrender () {
-            console.log('fetching...')
-            fetch('maps/segments/canada.json').then((res) => {
+            fetch(PATH_TO_MAP).then((res) => {
                 return res.json()
             })
             .then((result) => {
                 border = result
+                    console.log('loaded')
+                this.set({'loaded': true})
             })
         }
     }
