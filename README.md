@@ -10,6 +10,8 @@ This project is a javascript application written with [sveltejs](https://svelte.
 
 Nodejs 6+ is required to build. If this is not the system nodejs, I recommend [nvm](https://github.com/creationix/nvm).
 
+**First, see instructions below for downloading a map -- No GeoJSON is included in this repo**
+
 ```sh
 nvm use 6
 npm install
