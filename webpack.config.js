@@ -13,16 +13,20 @@ module.exports = {
         rules: [{
             test: /\.(html|js)$/,
             exclude: /node_modules/,
-            use: 'babel-loader',
-            query: {
-                presets: [
-                    ['es2015', { modules: false }]
-                ]
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: [
+                        ['es2015', { modules: false }]
+                    ]
+                }
             }
         }, {
             test: /\.html$/,
             exclude: /node_modules/,
-            use: 'svelte-loader'
+            use: {
+                loader: 'svelte-loader'
+            }
         }]
     },
     devtool: 'inline-source-map'
