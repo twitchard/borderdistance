@@ -1,4 +1,5 @@
 node_modules
 public/index.js
-maps
+maps/geojson/*
+maps/segments/*
 dist
