@@ -77,7 +77,10 @@ function main () {
             console.error(e)
             process.exit(1)
         }
-        const polygons = data[0].geometry.coordinates
+        if (Array.isArray(data)) {
+            data = data[0]
+        }
+        const polygons = data.geometry.coordinates
         const ret = _(polygons).map(polygonToPaths).flatten()
         console.log(JSON.stringify(
             ret,
