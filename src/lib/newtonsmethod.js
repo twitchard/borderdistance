@@ -16,6 +16,7 @@ exports.minimize = tunableMinimize.bind(null,
     CONVERGENCE_MARGIN
 )
 
+// For debugging
 function graph (f, l) {
     l.map((x) => {
         console.log(`f(${x}) = ${f(x)}`)
@@ -36,7 +37,7 @@ function graph (f, l) {
  *   point in domain at which to start estimation
  */
 function tunableMinimize (numIters, stepSize, convergenceMargin, f, initialGuess) {
-    graph(f, [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1])
+    //graph(f, [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1])
     let cur = initialGuess
     const points = [initialGuess]
     for (let i = 1; i <= numIters; i++) {
@@ -67,4 +68,3 @@ function estimateSecondDerivative(f, x, stepSize) {
     const ret = (estimateFirstDerivative(f, x + stepSize, x) - estimateFirstDerivative(f, x - stepSize, x)) / (2 * stepSize)
     return ret
 }
-

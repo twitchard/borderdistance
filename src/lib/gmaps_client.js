@@ -1,7 +1,7 @@
 import GMaps from 'gmaps'
 import mapsapi from 'google-maps-api'
 
-const API_KEY='AIzaSyD_XGdkqvAA84OezC5DL-zOWklo6rrM4dk'
+const API_KEY='AIzaSyANpy42NmkhgWLIvZ2ROd0KLHVK6s4jzEI'
 
 function init (callback) {
     mapsapi(API_KEY)().then((api) => {
